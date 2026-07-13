@@ -102,6 +102,18 @@
       width: 100%; height: 100%; object-fit: cover;
       position: absolute; inset: 0;
     }
+    .hero-slides {
+      display: flex; height: 100%;
+      transition: transform 0.4s cubic-bezier(.25,.46,.45,.94);
+      will-change: transform;
+    }
+    .hero-slide {
+      min-width: 100%; height: 100%;
+      flex-shrink: 0; position: relative;
+    }
+    .hero-slide img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
     .hero-content {
       position: absolute; inset: 0;
       display: flex; align-items: flex-end;
@@ -670,7 +682,8 @@
 
     <!-- Hero Banner -->
     <div class="hero" id="heroBanner">
-      <div class="hero-content">
+      <div class="hero-slides" id="heroSlides"></div>
+      <div class="hero-content" id="heroContent">
         <div class="hero-inner">
           <div class="hero-badge">🔥 สินค้ายอดนิยม</div>
           <div class="hero-title">สินค้าคุณภาพ<br><span>ราคาพิเศษ</span></div>
@@ -678,11 +691,7 @@
         </div>
       </div>
       <div class="hero-emoji-wrap" id="heroEmoji">💨</div>
-      <div class="hero-dots">
-        <div class="hero-dot active"></div>
-        <div class="hero-dot"></div>
-        <div class="hero-dot"></div>
-      </div>
+      <div class="hero-dots" id="heroDots"></div>
     </div>
 
     <!-- Categories -->
@@ -892,7 +901,10 @@
     const SHOP = 'ABC Shop';
 
     // 🖼️ รูปภาพร้าน — ใส่ URL รูปจาก Imgur ได้เลย
-    const HERO_IMG   = 'https://raw.githubusercontent.com/milinmengg-oss/abc-shop/main/hero-banner.jpg';   // URL รูปแบนเนอร์หลัก
+    const HERO_IMGS  = [
+      'https://raw.githubusercontent.com/milinmengg-oss/abc-shop/main/hero-banner.jpg',
+      'https://raw.githubusercontent.com/milinmengg-oss/abc-shop/main/banner2.jpg',
+    ];   // รูปแบนเนอร์ carousel (เพิ่มรูปได้เรื่อยๆ)
     const SHOP_LOGO  = '';   // URL โลโก้ร้าน
 
     // หมวดหมู่
@@ -1011,16 +1023,46 @@
       }
     }
 
-    // ── Hero image ──
-    if (HERO_IMG) {
+    // ── Hero Carousel ──
+    (function() {
+      if (!HERO_IMGS.length) return;
+      const slidesEl = document.getElementById('heroSlides');
+      const dotsEl   = document.getElementById('heroDots');
+      let cur = 0, tx = 0, timer;
+      // build slides
+      HERO_IMGS.forEach(src => {
+        const s = document.createElement('div'); s.className = 'hero-slide';
+        const img = document.createElement('img'); img.src = src;
+        img.onerror = () => s.style.background='var(--card)';
+        s.appendChild(img); slidesEl.appendChild(s);
+      });
+      // build dots
+      HERO_IMGS.forEach((_, i) => {
+        const d = document.createElement('div');
+        d.className = 'hero-dot' + (i===0?' active':'');
+        dotsEl.appendChild(d);
+      });
+      // hide default text/emoji overlay
+      document.getElementById('heroContent').style.display = 'none';
+      document.getElementById('heroEmoji').style.display   = 'none';
+      // go to slide n
+      function goTo(n) {
+        cur = (n + HERO_IMGS.length) % HERO_IMGS.length;
+        slidesEl.style.transform = `translateX(-${cur*100}%)`;
+        dotsEl.querySelectorAll('.hero-dot').forEach((d,i) => d.classList.toggle('active', i===cur));
+      }
+      function startAuto() { timer = setInterval(() => goTo(cur+1), 3000); }
+      function stopAuto()  { clearInterval(timer); }
+      startAuto();
+      // touch swipe
       const hero = document.getElementById('heroBanner');
-      const img = document.createElement('img');
-      img.className = 'hero-bg-img';
-      img.src = HERO_IMG;
-      img.onerror = () => img.remove();
-      hero.prepend(img);
-      document.getElementById('heroEmoji').style.display = 'none';
-    }
+      hero.addEventListener('touchstart', e => { tx = e.touches[0].clientX; stopAuto(); }, {passive:true});
+      hero.addEventListener('touchend',   e => {
+        const dx = e.changedTouches[0].clientX - tx;
+        if (Math.abs(dx) > 40) goTo(cur + (dx < 0 ? 1 : -1));
+        startAuto();
+      }, {passive:true});
+    })();
 
     // ── Logo ──
     if (SHOP_LOGO) {
