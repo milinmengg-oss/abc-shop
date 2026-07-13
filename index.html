@@ -90,9 +90,9 @@
 
     /* ═══ HERO BANNER ═══ */
     .hero {
-      margin: 12px 16px;
-      height: 190px;
-      border-radius: 20px;
+      margin: 10px 12px;
+      height: 200px;
+      border-radius: 18px;
       overflow: hidden;
       position: relative;
       background: var(--card);
@@ -140,15 +140,15 @@
     /* ═══ SECTION HEADER ═══ */
     .sec-head {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 14px 16px 8px;
+      padding: 14px 12px 8px;
     }
     .sec-title { font-size: 16px; font-weight: 800; }
     .sec-more { font-size: 12px; color: var(--lime); font-weight: 700; cursor: pointer; }
 
     /* ═══ CATEGORY CIRCLES ═══ */
     .cat-scroll {
-      display: flex; gap: 14px;
-      padding: 0 16px 14px;
+      display: flex; gap: 12px;
+      padding: 0 12px 14px;
       overflow-x: auto; scrollbar-width: none;
     }
     .cat-scroll::-webkit-scrollbar { display: none; }
@@ -158,11 +158,11 @@
       flex-shrink: 0; cursor: pointer;
     }
     .cat-circle {
-      width: 62px; height: 62px; border-radius: 50%;
-      background: var(--card2);
-      border: 2px solid var(--card3);
+      width: 66px; height: 66px; border-radius: 50%;
+      background: #222222;
+      border: 2px solid #333;
       display: flex; align-items: center; justify-content: center;
-      font-size: 24px; overflow: hidden;
+      font-size: 26px; overflow: hidden;
       transition: border-color .2s, transform .15s;
       filter: grayscale(30%);
     }
@@ -173,12 +173,12 @@
       filter: none;
     }
     .cat-circle-wrap:active .cat-circle { transform: scale(0.88); }
-    .cat-label { font-size: 10px; font-weight: 600; color: var(--sub); text-align: center; max-width: 68px; }
+    .cat-label { font-size: 11px; font-weight: 600; color: var(--sub); text-align: center; max-width: 72px; }
     .cat-circle-wrap.active .cat-label { color: var(--lime); }
 
     /* ═══ NIC FILTER ═══ */
     .nic-filter {
-      display: flex; gap: 8px; padding: 0 16px 10px;
+      display: flex; gap: 8px; padding: 0 12px 10px;
     }
     .nic-btn {
       padding: 5px 14px; border-radius: 20px;
@@ -193,19 +193,19 @@
     /* ═══ PRODUCT GRID ═══ */
     .p-grid {
       display: grid; grid-template-columns: 1fr 1fr;
-      gap: 10px; padding: 0 16px 16px;
+      gap: 8px; padding: 0 12px 16px;
     }
     .p-card {
-      background: var(--card); border-radius: 16px;
+      background: #1e1e1e; border-radius: 16px;
       overflow: hidden; cursor: pointer;
       transition: transform .15s;
-      border: 1px solid var(--border);
+      border: 1px solid #2a2a2a;
     }
     .p-card:active { transform: scale(0.96); }
     .p-thumb {
-      aspect-ratio: 1; background: var(--card2);
+      aspect-ratio: 1; background: #111111;
       display: flex; align-items: center; justify-content: center;
-      font-size: 52px; position: relative; overflow: hidden;
+      font-size: 60px; position: relative; overflow: hidden;
     }
     .p-thumb img {
       position: absolute; inset: 0;
@@ -253,7 +253,7 @@
 
     /* ═══ FILTER BAR (Menu page) ═══ */
     .filter-bar {
-      padding: 8px 16px 6px;
+      padding: 8px 12px 6px;
       position: sticky; top: 57px;
       background: var(--bg); z-index: 50;
     }
@@ -697,7 +697,7 @@
       <div class="logo-wrap">
         <div class="logo-text" style="font-size:17px;">เมนูสินค้า</div>
       </div>
-      <div claq��"h-actions">
+      <div class="h-actions">
         <button class="h-btn" id="cartBtn2" onclick="openCart()">
           🛒<div class="cart-dot" id="dot2">0</div>
         </button>
@@ -779,7 +779,7 @@
     </div>
     <div class="member-card">
       <div class="member-logo">ABC Shop ✦</div>
-      <div class="member-type">MEMCER CARD</div>
+      <div class="member-type">MEMBER CARD</div>
       <div class="member-name" id="memberName">ลูกค้า ABC Shop</div>
       <div class="member-pts">
         <div class="member-pt-item">
@@ -1149,7 +1149,7 @@
             <div class="c-name">${p.name}${flavor?`<br><small style="color:var(--lime);font-size:11px">กลิ่น: ${flavor}</small>`:''}</div>
             <div class="c-price">฿${(p.price*cart[key]).toLocaleString()}</div>
           </div>
-          <div class="qty-ctrl">
+          <div claq�="qty-ctrl">
             <button class="q-btn" onclick="dec('${key.replace(/'/g,"\\'")}')">−</button>
             <div class="q-num">${cart[key]}</div>
             <button class="q-btn plus" onclick="incCart('${key.replace(/'/g,"\\'")}')">+</button>
