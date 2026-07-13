@@ -71,6 +71,28 @@
     }
 
     /* ═══ TICKER ═══ */
+    /* ═══ FLASH SALE ═══ */
+    .flash-bar {
+      background: linear-gradient(135deg, #ff3333 0%, #ff8800 100%);
+      padding: 10px 16px; display: flex;
+      align-items: center; justify-content: space-between;
+      cursor: pointer;
+    }
+    .flash-left .flash-label {
+      font-size: 13px; font-weight: 900; color: #fff; letter-spacing: .3px;
+    }
+    .flash-left .flash-sub {
+      font-size: 10px; color: rgba(255,255,255,.8); margin-top: 2px; font-weight: 700;
+    }
+    .flash-timer { display: flex; align-items: center; gap: 4px; }
+    .f-blk {
+      background: rgba(0,0,0,.28); border-radius: 7px;
+      padding: 4px 7px; text-align: center; min-width: 38px;
+    }
+    .f-blk span { font-size: 17px; font-weight: 900; color: #fff; display: block; line-height: 1; font-variant-numeric: tabular-nums; }
+    .f-blk small { font-size: 8px; color: rgba(255,255,255,.75); font-weight: 700; }
+    .f-sep { font-size: 16px; font-weight: 900; color: rgba(255,255,255,.7); margin-bottom: 10px; }
+
     .ticker {
       background: var(--lime); color: #111;
       font-size: 12px; font-weight: 800;
@@ -707,6 +729,21 @@
       <div class="sec-more" onclick="setBrowseModeAndNav('brand')">ดูทั้งหมด ›</div>
     </div>
     <div class="cat-scroll" id="homeBrands"></div>
+
+    <!-- Flash Sale Bar -->
+    <div class="flash-bar" id="flashBar" onclick="nav('promo')">
+      <div class="flash-left">
+        <div class="flash-label">⚡ FLASH SALE — ส่งฟรีครบ ฿300!</div>
+        <div class="flash-sub">🔥 ราคาพิเศษสุดคุ้ม เฉพาะวันนี้เท่านั้น</div>
+      </div>
+      <div class="flash-timer">
+        <div class="f-blk"><span id="fH">00</span><small>ชม.</small></div>
+        <div class="f-sep">:</div>
+        <div class="f-blk"><span id="fM">00</span><small>นาที</small></div>
+        <div class="f-sep">:</div>
+        <div class="f-blk"><span id="fS">00</span><small>วิ</small></div>
+      </div>
+    </div>
 
     <!-- Featured -->
     <div class="sec-head">
@@ -1425,6 +1462,19 @@
 
     // ── Init ──
     renderHome();
+
+    // ── Flash Sale Countdown ──
+    (function() {
+      const end = new Date(); end.setHours(23,59,59,0);
+      function tick() {
+        const diff = Math.max(0, end - new Date());
+        if (!diff) { const b = document.getElementById('flashBar'); if(b) b.style.display='none'; return; }
+        document.getElementById('fH').textContent = String(Math.floor(diff/3600000)).padStart(2,'0');
+        document.getElementById('fM').textContent = String(Math.floor(diff%3600000/60000)).padStart(2,'0');
+        document.getElementById('fS').textContent = String(Math.floor(diff%60000/1000)).padStart(2,'0');
+      }
+      tick(); setInterval(tick, 1000);
+    })();
   </script>
 </div>
 </body>
